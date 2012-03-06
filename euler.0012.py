@@ -1,4 +1,4 @@
-#Answer: 
+#Answer: 76576500
 
 '''
 @author: Philippe Chretien
@@ -20,45 +20,85 @@ We can see that 28 is the first triangle number to have over five divisors.
 
 What is the value of the first triangle number to have over five hundred divisors?
 
+Used the following ressources to solve the problem:
+http://www.manhattangmat.com/forums/is-there-a-formula-to-calculate-the-number-of-factors-t2500.html
+http://www.wikihow.com/Factor-a-Number
 '''
 
 import math
 
-def checkForRoot(candidate):
-	roots = 0
-	for i in range(1,candidate):
-		if candidate%i == 0:
-			other = candidate/i
-			
-			if other == i:
-				return roots*2 + 1
-			
-			if other < i:
-				return roots*2
-			
-			roots += 1
-						
-	
-increment = 1
-candidate = 0
+primes = [2, 3]
 
-while True:
-	candidate += increment
-	increment += 1
+def testPrime(candidate):
+	i = 0
+	while primes[i]*primes[i] <= candidate:
+		if candidate%primes[i] == 0:
+			return False
+		i = i + 1
+	
+	return True
+
+def checkForRoots(candidate):
+	roots = 1
+	remains = candidate
+	for i in range(0,len(primes)):
+		exp = 0	
 		
-	if candidate < 250000:
-		continue
-		
-	if candidate%2 > 0:
-		continue
+		while remains % primes[i] == 0:
+			exp += 1
+			remains = remains / primes[i]
 			
-	# Test candidate
-	roots = checkForRoot(candidate)
-	
-	if roots > 100:
-		print str(candidate) + " -> " + str(roots)
-	
-	if roots > 500:
-		break
+			if remains == 1:
+				return roots*(exp+1)
 				
-print "Answer: " + str(candidate)
+		roots *= (exp+1)
+		
+	return roots
+
+def buildPrimesVector(limit):	
+	global primes
+	
+	print "Building vector of primes"
+	
+	count = 2
+	prime = 5
+	
+	while True:
+		if testPrime(prime) == True:
+			primes.append(prime)
+			count = count + 1
+
+		if count == limit:
+			break
+
+		prime = prime + 2
+	print "Done"
+
+
+def main():
+	candidate = 0
+	increment = 1
+	
+	buildPrimesVector(25)
+	
+	while True:
+		candidate += increment
+		increment += 1
+		
+		if candidate%2 > 0:
+			continue
+
+		# Test candidate
+		roots = checkForRoots(candidate)
+
+		if roots > 100:
+			print str(candidate) + " -> " + str(roots)
+
+		if roots > 500:
+			break
+
+	print "Answer: " + str(candidate)
+
+if __name__ == "__main__":
+	main()
+	
