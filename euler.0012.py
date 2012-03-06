@@ -26,6 +26,7 @@ http://www.wikihow.com/Factor-a-Number
 '''
 
 import math
+import time
 
 primes = [2, 3]
 
@@ -76,6 +77,8 @@ def buildPrimesVector(limit):
 
 
 def main():
+	startTime = time.time()
+	
 	candidate = 0
 	increment = 1
 	
@@ -91,13 +94,15 @@ def main():
 		# Test candidate
 		roots = checkForRoots(candidate)
 
-		if roots > 100:
-			print str(candidate) + " -> " + str(roots)
+		# Debug
+		#if roots > 100:
+		#	print str(candidate) + " -> " + str(roots)
 
 		if roots > 500:
 			break
 
 	print "Answer: " + str(candidate)
+	print time.time() - startTime
 
 if __name__ == "__main__":
 	main()
