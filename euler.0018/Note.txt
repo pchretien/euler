@@ -1,0 +1,1 @@
+At every step compare the sum of the two external rows and pick the higher one. This means we always drop the less promising alternative.
